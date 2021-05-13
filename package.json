@@ -5,14 +5,25 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" :"node server.js"
+    "dev": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tensorflow/tfjs": "^3.6.0",
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "face-api.js": "^0.22.2",
+    "jquery": "^3.6.0"
+  },
+  "devDependencies": {
+    "@tensorflow/tfjs": "^3.6.0",
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.5",
+    "express": "^4.17.1",
+    "face-api.js": "^0.22.2",
+    "jquery": "^3.6.0"
   }
 }
