@@ -1,12 +1,11 @@
 // import faceapi from 'face-api.js'
 // const faceapi = require("face-api.js"
-// import tf from '@tensorflow/tfjs'
+// import * as tf from '@tensorflow/tfjs'/
 // const video = document.getElementById("video");
 // const inputImg = $('#inputImg').get(0)
 // const canvas = $('#overlay').get(0)
 
-var iCropLeft, iCropTop, iCropWidth, iCropHeight;
-
+var iCropLeft, iCropTop, iCropWidth, iCropHeight
     Promise.all([
         // faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
         // faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
@@ -59,9 +58,12 @@ var iCropLeft, iCropTop, iCropWidth, iCropHeight;
         const canvas = $('#overlay').get(0)
         const option = new faceapi.MtcnnOptions({minFaceSize: 20})
         const displaySize = {width: inputImg.width, height: inputImg.height};
+
         const detections = await faceapi.detectAllFaces(inputImg, option);
+        debugger
         // const example = tf.fromPixels(inputImg);  // for example
         // const prediction = model.predict(example);
+        // loadImage(inp)
         debugger
     /*    const box = detections[0].box;
         const img = new Image();
@@ -80,7 +82,7 @@ var iCropLeft, iCropTop, iCropWidth, iCropHeight;
         faceapi.draw.drawDetections(canvas, resizedResults);
     }
 
-function CropImage()
+/*function CropImage()
 {
     var canvas = document.getElementById("canvas");
 
@@ -94,6 +96,15 @@ function CropImage()
     };
 
     img.src = canvas.toDataURL();
+}*/
+
+function loadImage(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => resolve(tf.fromPixels(img));
+        img.onerror = (err) => reject(err);
+    });
 }
 
     function startVideo() {
