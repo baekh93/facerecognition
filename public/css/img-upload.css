@@ -1,0 +1,107 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #00bcd4;
+    font-family: "Open Sans", sans-serif;
+}
+
+/**
+        * Avatar & Image Upload
+        */
+.avatar-upload,
+.image-upload {
+    display: inline-block;
+    position: relative;
+    max-width: 205px;
+}
+.avatar-upload .avatar-edit,
+.image-upload .image-edit {
+    position: absolute;
+    z-index: 1;
+}
+.avatar-upload .avatar-edit {
+    right: 12px;
+    top: 10px;
+}
+.image-upload .image-edit {
+    right: -13px;
+    top: 10px;
+}
+.avatar-upload .avatar-edit input,
+.image-upload .image-edit input {
+    display: none;
+}
+.avatar-upload .avatar-edit input + label,
+.image-upload .image-edit input + label {
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0;
+    border-radius: 100%;
+    background: #ffffff;
+    border: 1px solid transparent;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    font-weight: normal;
+    transition: all 0.2s ease-in-out;
+}
+.avatar-upload .avatar-edit input + label:hover,
+.image-upload .image-edit input + label:hover {
+    background: #f1f1f1;
+    border-color: #d6d6d6;
+}
+.avatar-upload .avatar-edit input + label:after,
+.image-upload .image-edit input + label:after {
+
+    color: #757575;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: auto;
+}
+.avatar-upload .preview,
+.image-upload .preview {
+    width: 192px;
+    height: 192px;
+    position: relative;
+    border: 6px solid #f8f8f8;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+}
+.avatar-upload .preview {
+    border-radius: 100%;
+}
+.avatar-upload .preview > div,
+.image-upload .preview > div {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.avatar-upload .preview > div {
+    border-radius: 100%;
+}
+
+.preview > div,
+.invalid-file {
+    display: none;
+}
+
+.error {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    width: 100px;
+    height: 120px;
+    font-size: 1em;
+    text-transform: capitalize;
+    text-align: center;
+    color: #fff;
+    line-height: 1em;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+}

@@ -65,7 +65,7 @@ var iCropLeft, iCropTop, iCropWidth, iCropHeight
         // const prediction = model.predict(example);
         // loadImage(inp)
         debugger
-    /*    const box = detections[0].box;
+        const box = detections[0].box;
         const img = new Image();
         img.onload = function(){
             var cropCanvas = document.getElementById("canvas_crop");
@@ -74,7 +74,8 @@ var iCropLeft, iCropTop, iCropWidth, iCropHeight
             var ctx = cropCanvas.getContext("2d");
             ctx.drawImage( img, box.left, box.top, box.width, box.height, 0, 0, box.width, box.height );
         };
-        img.src = inputImg.toDataURL();*/
+        debugger
+        img.src = canvas.toDataURL();
         faceapi.matchDimensions(canvas, inputImg)
         const resizedResults = faceapi.resizeResults(detections, inputImg)
         // const resizedDetections = faceapi.resizeResults(detections, displaySize);
