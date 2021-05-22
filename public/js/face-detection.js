@@ -1,22 +1,24 @@
 // const canvas = require('canvas')
 // import  * as canvas from 'canvas'
 
-let maleModel = undefined;
+let maleModel, ssdModel = undefined;
 
 Promise.all([
     // faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
     // faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
     // faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
     faceapi.nets.mtcnn.load("/models"),
-    tf.loadGraphModel("/maleModel/model.json")
+    tf.loadGraphModel("/maleModel/model.json"),
+    tf.loadLayersModel("/ssdModel/model.json")
 ]).then(function (e) {
+    debugger
     maleModel = e[1];
+    ssdModel = e[2];
 });
 
 const resStr = ["못생김", "잘생김"]
 var clsImage;
 var iCropLeft, iCropTop, iCropWidth, iCropHeight;
-
 // 로컬 이미지 파일을 Canvas 에 로드한다.
 async function LoadImage() {
     if (typeof window.FileReader !== 'function') {
@@ -50,8 +52,16 @@ async function LoadImage() {
             // const option = new faceapi.MtcnnOptions({maxNumScales: 5});
 
             const inpimage = document.getElementById("canvas").getContext("3d");
-            const option = new faceapi.MtcnnOptions({});
-            const detections = await faceapi.detectAllFaces(inputIMG, option);
+
+            // const detInput = tf.browser.fromPixels(canvas);
+            // debugger
+            // const rst = await detModel.predict(detInput);
+
+            // const option = new faceapi.MtcnnOptions({});
+            // const detections = await faceapi.detectAllFaces(inputIMG, option);
+            //
+
+            // const rst = detModel.predict(detInput);
             debugger
             if (detections.length === 0) {
                 toast.toast("error", "사진에서 얼굴을 인식하지 못했습니다. 다른 이미지를 사용해주세요", "top")
