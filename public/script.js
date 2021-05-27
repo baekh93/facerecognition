@@ -17,7 +17,6 @@ var iCropLeft, iCropTop, iCropWidth, iCropHeight
         const img = await requestExternalImage($('#imgUrlInput').val())
         $('#inputImg').get(0).src = img.src
         startImg()
-
     }
 
 //파일업로드시 실행되는 함
@@ -56,16 +55,24 @@ var iCropLeft, iCropTop, iCropWidth, iCropHeight
         // const model = await tf.loadLayersModel("/models/male_model.json");
         const inputImg = $('#inputImg').get(0)
         const canvas = $('#overlay').get(0)
+
+        // var cc = document.getElementById("canvas_crop");
+        // var img = document.getElementById("testImg");
+
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, inputImg.width, inputImg.height, 0, 0, inputImg.width, inputImg.height);
+        // img.src = cc.toDataURL();
         const option = new faceapi.MtcnnOptions({minFaceSize: 20})
         const displaySize = {width: inputImg.width, height: inputImg.height};
 
-        const detections = await faceapi.detectAllFaces(inputImg, option);
-        debugger
+        const detections = await faceapi.detectAllFaces(canvas, option);
+
         // const example = tf.fromPixels(inputImg);  // for example
         // const prediction = model.predict(example);
         // loadImage(inp)
         debugger
-    /*    const box = detections[0].box;
+
+        /*  const box = detections[0].box;
         const img = new Image();
         img.onload = function(){
             var cropCanvas = document.getElementById("canvas_crop");
