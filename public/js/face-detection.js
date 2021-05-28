@@ -1,21 +1,24 @@
 // const canvas = require('canvas')
 // import  * as canvas from 'canvas'
 
-let maleModel = undefined;
+let maleModel, ssdModel = undefined;
 
 Promise.all([
     // faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
     // faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
     // faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
     faceapi.nets.mtcnn.load("/models"),
-    tf.loadGraphModel("/maleModel/model.json")
+    tf.loadGraphModel("/maleModel/model.json"),
 ]).then(function (e) {
+    debugger
     maleModel = e[1];
 });
 
 const resStr = ["못생김", "잘생김"]
 var clsImage;
 var iCropLeft, iCropTop, iCropWidth, iCropHeight;
+
+let fac_width, fac_height;
 
 // 로컬 이미지 파일을 Canvas 에 로드한다.
 async function LoadImage() {
@@ -35,14 +38,22 @@ async function LoadImage() {
 
     var inputFile = document.getElementById('image_file');
     var clsFileReader = new FileReader();
-    clsFileReader.onload = function () {
+    clsFileReader.onload = function (e) {
         clsImage = new Image();
         clsImage.onload = async function () {
             var canvas = document.getElementById("canvas");
+            // canvas.width = clsImage.width;
+            // canvas.height = clsImage.height;
+            await getFactorImg(clsImage.width,clsImage.height)
 
-            canvas.width = clsImage.width;
-            canvas.height = clsImage.height;
+            canvas.width = fac_width
+            canvas.height =fac_height
+
             let inputIMG = $('#inputImg').get(0);
+
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(inputIMG, 0, 0, inputIMG.width, inputIMG.height, 0, 0, fac_width, fac_height);
+            debugger
 
             // const ctx = canvas.getContext("2d");
             // const dt = ctx.getImageData(0,0,canvas.width,canvas.height);
@@ -50,9 +61,15 @@ async function LoadImage() {
             // const option = new faceapi.MtcnnOptions({maxNumScales: 5});
 
             const inpimage = document.getElementById("canvas").getContext("3d");
+
+            // const detInput = tf.browser.fromPixels(canvas);
+            // debugger
+            // const rst = await detModel.predict(detInput);
+
             const option = new faceapi.MtcnnOptions({});
-            const detections = await faceapi.detectAllFaces(inputIMG, option);
-            debugger
+            const detections = await faceapi.detectAllFaces(canvas, option);
+
+            // const rst = detModel.predict(detInput);
             if (detections.length === 0) {
                 toast.toast("error", "사진에서 얼굴을 인식하지 못했습니다. 다른 이미지를 사용해주세요", "top")
             } else {
@@ -73,7 +90,15 @@ async function LoadImage() {
               iImageHeight = clsImage.height;*/
 
             DrawCropRect();
-            await CropImage()
+            await CropImage();
+        /*    img = new Image();
+            img.onload = function () {
+                var canvas1 = document.getElementById("canvas_crop");
+
+                var ctx = canvas1.getContext("2d");
+                ctx.drawImage(img, 0, 0, canvas1.width,  canvas1.height, 0, 0,  canvas1.width,  canvas1.height);
+            };*/
+
             // $("#inputImg").hide()
             // $("#canvas").hide()
             // AddCropMoveEvent();
@@ -83,6 +108,19 @@ async function LoadImage() {
     };
     clsFileReader.readAsDataURL(inputFile.files[0]);
 
+}
+
+function getFactorImg(width, height) {
+    let factor = undefined;
+    if (width >height) {
+        factor = 800/width;
+
+    }else {
+        factor= 800/height
+    }
+
+     fac_width = clsImage.width*factor;
+    fac_height =clsImage.height*factor;
 }
 
 /*function canvas2PNGImage(canvas : HTMLCanvasElement) : HTMLImageElement {
@@ -95,10 +133,11 @@ async function LoadImage() {
 // 로컬 이미지 파일과 Crop 을 위한 사각형 박스를 그려준다.
 function DrawCropRect() {
     var canvas = document.getElementById("canvas");
+
     var ctx = canvas.getContext("2d");
 
-    ctx.drawImage(clsImage, 0, 0);
-
+    // ctx.drawImage(clsImage, 0, 0);
+    ctx.drawImage(canvas, 0, 0);
     ctx.strokeStyle = "#ff0000";
     ctx.beginPath();
     ctx.rect(iCropLeft, iCropTop, iCropWidth, iCropHeight);
@@ -115,14 +154,18 @@ async function CropImage() {
         canvas.width = iCropWidth;
         canvas.height = iCropHeight;
         var ctx = canvas.getContext("2d");
-        debugger
         ctx.drawImage(img, iCropLeft, iCropTop, iCropWidth, iCropHeight, 0, 0, iCropWidth, iCropHeight);
+
+        var cc = document.getElementById("canvas_crop");
+        var new_img = document.getElementById("testImg");
+        var ctx = cc.getContext("2d");
+        ctx.drawImage(new_img, 0, 0, cc.width, cc.height, 0, 0, cc.width, cc.height);
+        new_img.src = cc.toDataURL();
     };
     // const maleModel = await tf.serialization.registerClass();
 
     const resizeImg = await tf.image.resizeBilinear(tf.browser.fromPixels(canvas), [224, 224]).div(tf.scalar(255));
     // const normImg = resizeImg / 255.
-    debugger
     const inputTensor = tf.expandDims(resizeImg);
     const pred = maleModel.predict(inputTensor);
     const score = pred.dataSync()
@@ -130,7 +173,6 @@ async function CropImage() {
     toast.toast("success", resultIndex, "center")
 
 
-    debugger
     img.src = canvas.toDataURL();
 }
 

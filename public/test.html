@@ -19,6 +19,9 @@
             top:40px; left: 10px;
 
         }
+        #testImg {
+            top: 480px;
+        }
         #canvas_crop {
             position: absolute;
             top: 200px; left: 10px;
@@ -35,7 +38,7 @@
 <input type='file' id='image_file' />
 <input type='button' value='Load' onclick='LoadImage();' />
 <canvas id="canvas"></canvas>
-<img style="" id="inputImg" />
+<img style="display: none" id="inputImg" />
 <img id = "testImg" />
 <input type='button' value='다시하기' onclick='location.reload();' />
 <canvas id="canvas_crop"></canvas>
