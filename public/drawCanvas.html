@@ -2,12 +2,12 @@
 <html lang = "kr" >
 <head>
     <meta charset = "utf-8" >
-    <title> 키보드와 하루 </title>
+    <title> 기초공사 </title>
 </head>
 <body>
-<canvas id = "tcanvas" width = "300" height = "200" style =' border : 1px solid #000 '; > </canvas>
+<canvas id = "draw-canavas" width = "300" height = "300" style =' border : 1px solid #000 '; > </canvas>
 <script>
-    var canvas = document. getElementById ( "tcanvas" );
+    var canvas = document. getElementById ( "draw-canavas" );
     var context = canvas. getContext ( "2d" );
     //canvas에 mousedown 이벤트 추가 : 이벤트 발생시 mDown 호출
     canvas. addEventListener ( "mousedown" , function (me) {

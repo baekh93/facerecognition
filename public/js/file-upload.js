@@ -131,21 +131,22 @@ const imgTag = $div.find(".file-upload-image");
     img = new Image();
     img.onload = function () {
         // var canvas = document.getElementById("canvas_crop");
-        crop_canvas.width = iCropWidth;
+   /*     crop_canvas.width = iCropWidth;
         crop_canvas.height = iCropHeight;
         var ctx = crop_canvas.getContext("2d");
-        ctx.drawImage(img, iCropLeft, iCropTop, iCropWidth, iCropHeight, 0, 0, iCropWidth, iCropHeight);
+        ctx.drawImage(img, iCropLeft, iCropTop, iCropWidth, iCropHeight, 0, 0, iCropWidth, iCropHeight);*/
 
-        var cc = document.getElementById("canvas_crop");
+        // var cc = $div.find(".crop")document.getElementsByClassName("canvas_crop")[0];
         var new_img = document.getElementById("testImg");
-        var ctx = cc.getContext("2d");
-        ctx.drawImage(new_img, 0, 0, cc.width, cc.height, 0, 0, cc.width, cc.height);
-        new_img.src = cc.toDataURL();
+        var ctx = crop_canvas.getContext("2d");
+        ctx.drawImage(new_img, 0, 0, crop_canvas.width, crop_canvas.height, 0, 0, crop_canvas.width, crop_canvas.height);
+        new_img.src = crop_canvas.toDataURL();
     };
     // const maleModel = await tf.serialization.registerClass();
 
     const resizeImg = await tf.image.resizeBilinear(tf.browser.fromPixels(canvas), [224, 224]).div(tf.scalar(255));
-    // const normImg = resizeImg / 255.    const inputTensor = tf.expandDims(resizeImg);
+    // const normImg = resizeImg / 255.
+    const inputTensor = tf.expandDims(resizeImg);
     const pred = maleModel.predict(inputTensor);
     const score = pred.dataSync()
     resultSet[resVal].score = score
